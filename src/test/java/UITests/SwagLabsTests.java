@@ -3,6 +3,8 @@ package UITests;
 import POM.page.*;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.*;
+
+import static UITestData.GetData.getData;
 import static com.codeborne.selenide.logevents.SelenideLogger.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static properties.GetProperties.getProperty;
@@ -56,7 +58,7 @@ public class SwagLabsTests {
         productsPage.header.goToCart();
         cartPage.checkItemsInCartNumberShouldBe(3);
         cartPage.checkout();
-        checkoutPage.fillOutCheckoutForm(getProperty("firstName"), getProperty("lastName"), getProperty("zip"));
+        checkoutPage.fillOutCheckoutForm(getData("firstName"), getData("lastName"), getData("zip"));
         checkoutPage.checkOfTotalPrice();
         checkoutPage.finish();
         completePage.checkComplete();
@@ -72,7 +74,7 @@ public class SwagLabsTests {
         productsPage.header.goToCart();
         cartPage.checkItemsInCartNumberShouldBe(3);
         cartPage.checkout();
-        checkoutPage.fillOutCheckoutForm(getProperty("firstName"), getProperty("lastName"), getProperty("zip"));
+        checkoutPage.fillOutCheckoutForm(getData("firstName"), getData("lastName"), getData("zip"));
         checkoutPage.checkOfTotalPrice();
         checkoutPage.finish();
         completePage.checkComplete();
