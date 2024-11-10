@@ -8,13 +8,11 @@ import java.util.Properties;
 public class GetProperties {
 
     protected static Properties PROPERTIES;
-    protected static FileInputStream fileInputStream;
 
     static {
         try {
-            fileInputStream = new FileInputStream("src/test/resources/env.properties");
             PROPERTIES = new Properties();
-            PROPERTIES.load(fileInputStream);
+            PROPERTIES.load(new FileInputStream("src/test/resources/env.properties"));
         } catch (Exception e) {
             e.printStackTrace();
         }

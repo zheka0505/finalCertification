@@ -17,10 +17,17 @@ public class SwagLabsTests {
     CheckoutPage checkoutPage;
     CompletePage completePage;
 
+    String standardUser = getProperty("standardUser");
+    String blockedUser = getProperty("blockedUser");
+    String performanceGlitchUser = getProperty("performanceGlitchUser");
+    String password = getProperty("passwordUI");
+
+
     @BeforeAll
     public static void setUpGlobal() {
         Configuration.baseUrl = getProperty("urlUI");
         Configuration.headless = true;
+
     }
 
     @BeforeEach
@@ -37,7 +44,7 @@ public class SwagLabsTests {
     @DisplayName("Успешная авторизация")
     @Tag("positive")
     public void successfulLogin() {
-        loginPage.login(getProperty("standardUser"), getProperty("passwordUI"));
+        loginPage.login(standardUser,password);
         productsPage.checkOfSuccessfulLogin();
     }
 
@@ -45,7 +52,7 @@ public class SwagLabsTests {
     @DisplayName("Авторизация заблокированного пользователя")
     @Tag("negative")
     public void unsuccessfulLogin() {
-        loginPage.login(getProperty("blockedUser"), getProperty("passwordUI"));
+        loginPage.login(blockedUser, password);
         step("Проверяем что вышло сообщение о том, что пользователь заблокирован", () -> assertEquals("Epic sadface: Sorry, this user has been locked out.", loginPage.getErrorText()));
     }
 
@@ -53,7 +60,7 @@ public class SwagLabsTests {
     @DisplayName("e2e-сценарий под пользователем standard_user")
     @Tag("positive")
     public void e2eStandardUser() {
-        loginPage.login(getProperty("standardUser"), getProperty("passwordUI"));
+        loginPage.login(standardUser, password);
         productsPage.addToCart();
         productsPage.header.goToCart();
         cartPage.checkItemsInCartNumberShouldBe(3);
@@ -68,7 +75,7 @@ public class SwagLabsTests {
     @DisplayName("e2e-сценарий под пользователем performance_glitch_user")
     @Tag("positive")
     public void e2ePerformanceGlitchUser() {
-        loginPage.login(getProperty("performanceGlitchUser"), getProperty("passwordUI"));
+        loginPage.login(performanceGlitchUser, password);
         productsPage.checkOfSuccessfulLogin();
         productsPage.addToCart();
         productsPage.header.goToCart();
