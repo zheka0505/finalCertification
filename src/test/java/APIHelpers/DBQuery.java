@@ -118,6 +118,7 @@ public class DBQuery {
         }
     };
 
+    @Step("Удаление тестовых данных из БД")
     public static void deleteTestsCreatedData() {
         connectionDB();
         TypedQuery<EmployeeEntity> queryEmployee =
