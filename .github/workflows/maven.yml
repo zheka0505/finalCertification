@@ -1,21 +1,31 @@
 name: Run tests and publish report
-on: [push]
+
+on:
+  push:
+    branches: [ "master" ]
+
+
 jobs:
-  test:
+  build:
+
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up JDK
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: zulu
-          java-version: 22
-
-      - name: Run tests
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Run_tests
         run: mvn clean test
-
-      - name: Load test report history
+  Generate_report:
+    needs: Run_tests
+    runs-on: ubuntu-latest
+    name: Generate Allure Report
+    steps:
+      - name: Get Allure history
         uses: actions/checkout@v4
         if: always()
         continue-on-error: true
@@ -23,18 +33,21 @@ jobs:
           ref: gh-pages
           path: gh-pages
 
-      - name: Build test report
-        uses: simple-elf/allure-report-action@v1.7
+      - name: Generate Allure report with history
+        uses: simple-elf/allure-report-action@master
         if: always()
+        id: allure-report
         with:
+          allure_results: results/allure
           gh_pages: gh-pages
+          allure_report: allure-report
           allure_history: allure-history
-          allure_results: allure-results
+          keep_reports: 20
 
-      - name: Publish test report
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy report to Github Pages
         if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: allure-history
