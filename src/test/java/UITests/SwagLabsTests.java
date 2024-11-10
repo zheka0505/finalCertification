@@ -18,6 +18,7 @@ public class SwagLabsTests {
     @BeforeAll
     public static void setUpGlobal() {
         Configuration.baseUrl = getProperty("urlUI");
+        Configuration.headless = true;
     }
 
     @BeforeEach

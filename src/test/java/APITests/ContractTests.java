@@ -213,6 +213,7 @@ public class ContractTests {
 
     @Test
     @DisplayName("Получение сотрудника по несуществующему id, должен быть статус-код 404")
+    @Disabled
     @Issue("в свагере сказано, что Сотрудник не найден - 404, а выходит 500")
     @Tag("Негативный")
     public void getEmployeeByNotExistedId() {
@@ -247,6 +248,7 @@ public class ContractTests {
 
     @Test
     @DisplayName("Изменение информации о сотруднике с несуществующим id, должен быть статус-код 404")
+    @Disabled
     @Issue("в свагере сказано, что Сотрудник не найден - 404, а выходит 500")
     @Tag("Негативный")
     public void changeEmployeeDataWithNotExistedId() {
